@@ -22,9 +22,8 @@ class Level extends Phaser.Scene {
     this.nextLevel = {
       "Level1": "Level2",
       "Level2": "Level3",
-      "Level3": "BossLevel",
-      "Level4": "BossLevel",
-      "BossLevel": "Level1"
+      "Level3": "Level4",
+      "Level4": "BossLevel"
     }
 
     // Platforms
@@ -559,7 +558,12 @@ class Level extends Phaser.Scene {
               this.scene.stop(this.levelKey);
 
               // Start next scene
-              this.scene.start(this.nextLevel[this.levelKey]);
+              // Boss
+              if (this.levelKey === "BossLevel") {
+                this.scene.start("EndScene");
+              } else {
+                this.scene.start(this.nextLevel[this.levelKey]);
+              }
             }
           });
 
@@ -652,6 +656,113 @@ class Level extends Phaser.Scene {
         game.player.setVelocityY(-800);
       }
     }
+  }
+}
+
+// StartScene
+class StartScene extends Phaser.Scene {
+  // Constructor
+  constructor() {
+    // Super
+    super({
+      // Scene key
+      key: "StartScene"
+    });
+  }
+
+  // Preload
+  preload() {
+    // Cave background
+    this.load.image("cave", "https://content.codecademy.com/courses/learn-phaser/Cave%20Crisis/cave_background.png");
+
+    // Start
+    this.load.image("start", "assets/imgs/UI/start.png");
+  }
+
+  // Create
+  create() {
+    // Create background image
+    this.add.image(0, 0, "cave").setOrigin(0, 0);
+
+    // Text
+    this.add.text(120, 130, "Christmas \n   Run", {
+      fontSize: "50px",
+      fill: "#34c3eb"
+    });
+
+    // Button
+    game.start = this.add.sprite(250, 400, "start").setScale(0.8).setInteractive();
+
+    // Interactive
+    // Hover
+    game.start.on("pointerover", () => {
+      game.start.setScale(1);
+    });
+
+    game.start.on("pointerout", () => {
+      game.start.setScale(0.8);
+    });
+
+    // Click
+    game.start.on("pointerup", () => {
+      this.scene.stop("StartScene");
+      this.scene.start("Level1");
+    });
+  }
+}
+
+// EndScene
+class EndScene extends Phaser.Scene {
+  // Constructor
+  constructor() {
+    // Super
+    super({
+      // Scene key
+      key: "EndScene"
+    });
+  }
+
+  // Preload
+  preload() {
+    // Cave background
+    this.load.image("cave", "https://content.codecademy.com/courses/learn-phaser/Cave%20Crisis/cave_background.png");
+
+    // Start
+    this.load.image("restart", "assets/imgs/UI/again.png");
+  }
+
+  // Create
+  create() {
+    // Stop music
+    game.gotKeyMusic.stop();
+
+    // Create background image
+    this.add.image(0, 0, "cave").setOrigin(0, 0);
+
+    // Text
+    this.add.text(130, 130, "You Win!", {
+      fontSize: "50px",
+      fill: "#34c3eb"
+    });
+
+    // Button
+    game.end = this.add.sprite(250, 400, "restart").setScale(0.8).setInteractive();
+
+    // Interactive
+    // Hover
+    game.end.on("pointerover", () => {
+      game.end.setScale(1);
+    });
+
+    game.end.on("pointerout", () => {
+      game.end.setScale(0.8);
+    });
+
+    // Click
+    game.end.on("pointerup", () => {
+      this.scene.stop("EndScene");
+      this.scene.start("StartScene");
+    });
   }
 }
 
@@ -847,50 +958,61 @@ class Level4 extends Level {
         y: 575
       },
       {
-        x: 60,
-        y: 300
-      },
-      {
-        x: 440,
-        y: 300
-      },
-      {
-        x: 250,
+        x: 100,
         y: 440
       },
       {
-        x: 250,
-        y: 150
+        x: 400,
+        y: 250
       }
     ],
     [
       {
-        start: 20,
-        end: 140,
-        y: 0
-      },
-      {
-        start: 360,
+        start: 240,
         end: 480,
-        y: 0
-      }
-    ],
-    [
-      {
-        x: 420,
-        y: 240
-      },
-      {
-        x: 80,
-        y: 240
-      },
-      {
-        x: 430,
         y: 500
       }
     ],
     [
-    ], false, [250, 90], [250, 370]);
+      {
+        x: 180,
+        y: 370
+      },
+      {
+        x: 180,
+        y: 200
+      },
+      {
+        x: 330,
+        y: 180
+      }
+    ],
+    [
+      {
+        x: 25,
+        y: 405
+      },
+      {
+        x: 70,
+        y: 405
+      },
+      {
+        x: 115,
+        y: 405
+      },
+      {
+        x: 385,
+        y: 215
+      },
+      {
+        x: 430,
+        y: 215
+      },
+      {
+        x: 475,
+        y: 215
+      }
+    ], false, [50, 518], [180, 60]);
   }
 }
 
@@ -946,7 +1068,7 @@ const config = {
   },
 
   // Scenes
-  scene: [Level1, Level2, Level3, BossLevel]
+  scene: [StartScene, Level1, Level2, Level3, Level4, BossLevel, EndScene]
 };
 
 const phaserGame = new Phaser.Game(config);
