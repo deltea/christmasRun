@@ -297,6 +297,7 @@ class Level extends Phaser.Scene {
         if (game.boss.x === 462.5) {
           game.boss.setVelocityX(-100).setGravityX(-400);
         } else {
+          game.boss.setVelocityY(-1000);
           game.boss.setVelocityX(100).setGravityX(400);
         }
 
@@ -1033,6 +1034,10 @@ class BossLevel extends Level {
       {
         x: 450,
         y: 575
+      },
+      {
+        x: 250,
+        y: 400
       }
     ],
     [],
@@ -1064,6 +1069,7 @@ const config = {
 
       // Options
       enableBody: true,
+      // debug: true
     }
   },
 
