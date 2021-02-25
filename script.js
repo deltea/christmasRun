@@ -237,7 +237,7 @@ class Level extends Phaser.Scene {
     game.icicles = this.physics.add.group();
 
     // Boss
-    game.boss = this.physics.add.sprite(config.width, 0, "snowman").setScale(1.5).setGravityX(-400);
+    game.boss = this.physics.add.sprite(config.width, 500, "snowman").setScale(1.5).setGravityX(-400);
 
     // Hide
     if (this.levelKey !== "BossLevel") {
@@ -1042,7 +1042,7 @@ class BossLevel extends Level {
     ],
     [],
     [],
-    [], true, [250, 142], [250, 370]);
+    [], true, [250, 142], [250, 340]);
   }
 }
 
@@ -1069,12 +1069,12 @@ const config = {
 
       // Options
       enableBody: true,
-      // debug: true
+      debug: true
     }
   },
 
   // Scenes
-  scene: [StartScene, Level1, Level2, Level3, Level4, BossLevel, EndScene]
+  scene: [BossLevel, Level1, Level2, Level3, Level4, StartScene, EndScene]
 };
 
 const phaserGame = new Phaser.Game(config);
