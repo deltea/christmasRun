@@ -1074,7 +1074,7 @@ const config = {
   },
 
   // Scenes
-  scene: [BossLevel, Level1, Level2, Level3, Level4, StartScene, EndScene]
+  scene: [StartScene, Level1, Level2, Level3, Level4, BossLevel, EndScene]
 };
 
 const phaserGame = new Phaser.Game(config);
